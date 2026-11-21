@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cogload - Experiment Runner</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="app-header">
+      <h1>🧪 Experiment Runner (/collect)</h1>
+      <a href="/" class="btn btn-secondary">← Back to Dashboard</a>
+    </header>
+
+    <div class="card" id="step-consent">
+      <h2>Step 1: Informed Consent & Metadata</h2>
+      <p>Before recording behavioral signals for the research dataset, the participant must give consent.</p>
+      <div class="consent-box text-sm">
+        <p><strong>Privacy Agreement:</strong> No raw camera images or video recordings are saved to disk. All biometric tracking is converted to anonymous coordinate and frequency statistics. You can request complete data deletion at any time.</p>
+      </div>
+
+      <div class="form-grid" style="margin-top: 1rem;">
+        <div class="form-group">
+          <label>Participant ID:</label>
+          <input type="text" id="part-id" value="P001" class="text-input">
+        </div>
+        <div class="form-group">
+          <label>Lighting Condition:</label>
+          <select id="part-light" class="text-input">
+            <option value="normal">Normal</option>
+            <option value="bright">Bright</option>
+            <option value="dim">Dim</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Glasses:</label>
+          <select id="part-glasses" class="text-input">
+            <option value="false">No Glasses</option>
+            <option value="true">Wearing Glasses</option>
+          </select>
+        </div>
+      </div>
+
+      <button id="btn-consent-next" class="btn btn-primary" style="margin-top: 1.5rem;">Accept Consent & Proceed to Tasks</button>
+    </div>
+
+    <!-- Step 2: Task Area -->
+    <div class="card hidden" id="step-tasks">
+      <div class="task-header">
+        <h2 id="task-title">Cognitive Task Block</h2>
+        <div id="block-indicator" class="chip chip-info">Block 1 of 3</div>
+      </div>
+
+      <div id="task-display" class="stimulus-area">
+        <span id="stimulus-letter" class="stimulus-letter">+</span>
+      </div>
+
+      <div class="task-instructions">
+        <p id="instruction-text">Press <strong>Spacebar</strong> whenever the current letter matches the letter shown <strong>1 step ago</strong> (1-Back).</p>
+      </div>
+
+      <button id="btn-start-block" class="btn btn-primary btn-large">Start Task Block</button>
+    </div>
+
+    <!-- Step 3: NASA-TLX Questionnaire -->
+    <div class="card hidden" id="step-tlx">
+      <h2>Post-Block Subjective Assessment (NASA-TLX)</h2>
+      <p>Please rate your subjective workload experience during this block (0 = Very Low, 100 = Very High):</p>
+
+      <div class="tlx-grid">
+        <div class="tlx-item">
+          <label>Mental Demand: <span id="val-mental">50</span></label>
+          <input type="range" min="0" max="100" value="50" class="slider" id="tlx-mental">
+        </div>
+        <div class="tlx-item">
+          <label>Physical Demand: <span id="val-physical">20</span></label>
+          <input type="range" min="0" max="100" value="20" class="slider" id="tlx-physical">
+        </div>
+        <div class="tlx-item">
+          <label>Temporal Demand: <span id="val-temporal">40</span></label>
+          <input type="range" min="0" max="100" value="40" class="slider" id="tlx-temporal">
+        </div>
+        <div class="tlx-item">
+          <label>Performance (0=Fail, 100=Perfect): <span id="val-perf">80</span></label>
+          <input type="range" min="0" max="100" value="80" class="slider" id="tlx-perf">
+        </div>
+        <div class="tlx-item">
+          <label>Effort: <span id="val-effort">50</span></label>
+          <input type="range" min="0" max="100" value="50" class="slider" id="tlx-effort">
+        </div>
+        <div class="tlx-item">
+          <label>Frustration: <span id="val-frust">20</span></label>
+          <input type="range" min="0" max="100" value="20" class="slider" id="tlx-frust">
+        </div>
+      </div>
+
+      <button id="btn-submit-tlx" class="btn btn-primary" style="margin-top: 1.5rem;">Submit Workload Ratings & Continue</button>
+    </div>
+  </div>
+
+  <script src="/static/js/nback.js"></script>
+</body>
+</html>

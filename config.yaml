@@ -1,0 +1,48 @@
+camera:
+  index: 0
+  width: 640
+  height: 480
+  target_fps: 30
+
+processing:
+  max_queue: 2
+  interpolate_gap_frames: 3
+
+features:
+  window_sec: 10
+  stride_sec_live: 1
+  stride_sec_offline: 5
+  min_valid_ratio: 0.5
+  drop_block_start_sec: 15
+  blink_ratio: 0.75
+  blink_min_ms: 60
+  blink_max_ms: 600
+  blink_refractory_ms: 100
+  closure_ratio: 0.2
+  saccade_speed_thresh: 0.6      # gaze-units/sec; tune on data
+  fixation_speed_thresh: 0.15
+  offscreen_gaze_bound: 0.35
+
+calibration:
+  phase_a_sec: 60
+  phase_b_sec: 30
+  min_valid_ratio: 0.55
+  normalization: zbase           # raw | zbase | ratio
+
+model:
+  path: models/best
+  smoothing_alpha: 0.4
+  hysteresis_margin: 0.1
+
+artifacts:
+  filter_oral_motion: true
+  oral_mouth_std_thresh: 0.20
+  oral_brow_max_thresh: 0.28
+  high_motion_speed_thresh: 45.0
+
+server:
+  host: 127.0.0.1
+  port: 5050
+  debug_preview: false
+
+random_seed: 42

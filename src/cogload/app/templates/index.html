@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cogload - Real-Time Cognitive Load Estimation</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <script src="/static/vendor/chart.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <h1>🧠 Cogload <span class="tag">Live Behavioral Monitor</span></h1>
+        <p class="subtitle">Real-Time Cognitive Load Estimation via Facial & Ocular Signals</p>
+      </div>
+      <div class="header-chips">
+        <span id="chip-camera" class="chip chip-success">Camera Active</span>
+        <span id="chip-face" class="chip chip-warning">Detecting Face...</span>
+        <span id="chip-calib" class="chip chip-muted">Uncalibrated</span>
+        <span id="chip-model" class="chip chip-success">Model Loaded</span>
+        <span id="fps-badge" class="chip chip-info">-- FPS</span>
+      </div>
+    </header>
+
+    <!-- Mandatory Proxy Disclaimer -->
+    <div class="disclaimer-banner">
+      ⚠️ <strong>Important:</strong> Estimates are based on behavioral proxies from the webcam (blink frequency, gaze variation, head motion) and are <em>not</em> a direct measurement of brain activity or mental ability. Not for clinical or diagnostic use.
+    </div>
+
+    <!-- Live Preview & Main Grid -->
+    <div class="dashboard-grid">
+      <!-- Hero Load Card -->
+      <div class="card hero-card">
+        <h2>Cognitive Load State</h2>
+        <div class="hero-status">
+          <div id="load-badge" class="load-badge load-low">LOW</div>
+          <div class="load-details">
+            <div class="metric-row">
+              <span class="label">Confidence:</span>
+              <strong id="confidence-val">--%</strong>
+            </div>
+            <div class="metric-row">
+              <span class="label">Continuous Workload:</span>
+              <strong id="score-val">0.00</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gauge Bar -->
+        <div class="gauge-wrapper">
+          <div class="gauge-labels">
+            <span>Low (Relaxed)</span>
+            <span>Medium (Active)</span>
+            <span>High (Strained)</span>
+          </div>
+          <div class="gauge-track">
+            <div id="gauge-fill" class="gauge-fill" style="width: 15%;"></div>
+          </div>
+        </div>
+
+        <!-- Warnings strip -->
+        <div id="warnings-box" class="warnings-box hidden" style="margin-top: 1rem; padding: 0.6rem; background: #451a03; border: 1px solid #b45309; border-radius: 6px; font-size: 0.85rem; color: #fde68a;">
+          <span id="warning-text"></span>
+        </div>
+      </div>
+
+      <!-- Live Video Feed Card -->
+      <div class="card video-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <h2>Live Tracking Feed</h2>
+          <label style="font-size: 0.8rem; color: var(--text-muted); cursor: pointer;">
+            <input type="checkbox" id="toggle-overlay" checked> Show Landmarks
+          </label>
+        </div>
+        <div class="video-container" style="background: #0f172a; border-radius: 8px; overflow: hidden; height: 180px; display: flex; align-items: center; justify-content: center; position: relative;">
+          <canvas id="live-canvas" width="640" height="480" style="width: 100%; height: 100%; object-fit: contain;"></canvas>
+          <img id="live-video-stream" src="/api/video_feed?overlay=true" alt="Camera Feed" style="display: none;">
+        </div>
+        <div class="btn-group" style="margin-top: 0.8rem;">
+          <a href="/calibrate" class="btn btn-primary" style="flex: 1; text-align: center;">🎯 Start Calibration (30s)</a>
+          <a href="/collect" class="btn btn-secondary" style="flex: 1; text-align: center;">🧪 Tasks (/collect)</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Indicator Tiles Grid -->
+    <div class="indicators-grid">
+      <div class="indicator-tile">
+        <span class="tile-title">Blink Rate</span>
+        <div class="tile-value"><span id="ind-blink">--</span> <span class="unit">bpm</span></div>
+        <div class="tile-delta" id="delta-blink">Δ baseline: --</div>
+      </div>
+
+      <div class="indicator-tile">
+        <span class="tile-title">Eye Aspect Ratio (EAR)</span>
+        <div class="tile-value"><span id="ind-ear">--</span></div>
+        <div class="tile-delta" id="delta-ear">Openness proxy</div>
+      </div>
+
+      <div class="indicator-tile">
+        <span class="tile-title">Gaze Dispersion</span>
+        <div class="tile-value"><span id="ind-gaze">--</span></div>
+        <div class="tile-delta" id="delta-gaze">Δ baseline: --</div>
+      </div>
+
+      <div class="indicator-tile">
+        <span class="tile-title">Head Motion Speed</span>
+        <div class="tile-value"><span id="ind-head">--</span> <span class="unit">deg/s</span></div>
+        <div class="tile-delta" id="delta-head">Δ baseline: --</div>
+      </div>
+
+      <div class="indicator-tile">
+        <span class="tile-title">Facial Tension (Brow)</span>
+        <div class="tile-value"><span id="ind-tension">--</span></div>
+        <div class="tile-delta" id="delta-tension">Δ baseline: --</div>
+      </div>
+    </div>
+
+    <!-- Timeline Chart -->
+    <div class="card chart-card">
+      <div class="chart-header">
+        <h2>Continuous Workload Timeline (Rolling 60-Sec Window)</h2>
+        <span class="chart-legend" style="font-size: 0.85rem; color: var(--text-muted);">0.0 (Relaxed) to 1.0 (High Effort)</span>
+      </div>
+      <div class="chart-container">
+        <canvas id="timelineChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

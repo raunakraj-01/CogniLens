@@ -1,0 +1,37 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+build/
+dist/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Data and session recordings (privacy & reproducibility - PRD Rule 7)
+/data/
+!/data/.gitkeep
+
+# Models
+/models/*
+!/models/face_landmarker.task
+!/models/best/
+!/models/best/**
+!/models/.gitkeep
+
+# Reports output
+/reports/figures/*
+/reports/tables/*
+!/reports/.gitkeep
+
+# IDE and OS
+.DS_Store
+.vscode/
+.idea/
+.pytest_cache/
+.ruff_cache/

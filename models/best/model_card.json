@@ -1,0 +1,98 @@
+{
+  "model_name": "RF_CognitiveLoad_zbase",
+  "created_at": "2026-11-21T08:12:43.665541+00:00",
+  "classes": [
+    "LOW",
+    "MEDIUM",
+    "HIGH"
+  ],
+  "feature_names": [
+    "ear_mean",
+    "ear_std",
+    "ear_min",
+    "perclos",
+    "blink_rate",
+    "blink_dur_mean",
+    "blink_dur_std",
+    "blink_count",
+    "gaze_x_std",
+    "gaze_y_std",
+    "gaze_speed_mean",
+    "gaze_speed_p95",
+    "saccade_rate",
+    "fixation_ratio",
+    "offscreen_ratio",
+    "yaw_std",
+    "pitch_std",
+    "roll_std",
+    "head_speed_mean",
+    "head_motion_energy",
+    "brow_furrow_mean",
+    "brow_furrow_std",
+    "mouth_tension_mean",
+    "mouth_tension_std"
+  ],
+  "normalization_scheme": "zbase",
+  "sigma_floors": {
+    "ear_mean": 0.0059294385134961835,
+    "ear_std": 0.012967972892975282,
+    "ear_min": 0.00439243968501585,
+    "perclos": 0.004756577978550247,
+    "blink_rate": 6.9682295971684765,
+    "blink_dur_mean": 27.944745882598358,
+    "blink_dur_std": 15.064013019186,
+    "blink_count": 1.155621245486647,
+    "gaze_x_std": 0.006008468170384548,
+    "gaze_y_std": 0.006731050438678915,
+    "gaze_speed_mean": 0.014949560368688428,
+    "gaze_speed_p95": 0.07491860589002144,
+    "saccade_rate": 0.17853101931263898,
+    "fixation_ratio": 0.049330326891994104,
+    "offscreen_ratio": 0.0001,
+    "yaw_std": 0.0332967351866896,
+    "pitch_std": 0.029913182139960408,
+    "roll_std": 0.019519387479045587,
+    "head_speed_mean": 0.057091675202167805,
+    "head_motion_energy": 7.484540853769656,
+    "brow_furrow_mean": 0.0012157496797497744,
+    "brow_furrow_std": 0.0006702181588669659,
+    "mouth_tension_mean": 0.009272691414875281,
+    "mouth_tension_std": 0.005143651047824958
+  },
+  "metrics": {
+    "loso_macro_f1_mean": 0.9887766554433222,
+    "loso_macro_f1_std": 0.02509616136363401,
+    "loso_ci_95": [
+      0.9738121960344183,
+      1.0
+    ],
+    "loso_accuracy_mean": 0.9888888888888889,
+    "confusion_matrix": [
+      [
+        88,
+        2,
+        0
+      ],
+      [
+        0,
+        90,
+        0
+      ],
+      [
+        0,
+        1,
+        89
+      ]
+    ]
+  },
+  "training_data_summary": {
+    "n_windows": 270,
+    "n_participants": 18,
+    "class_distribution": {
+      "2": 90,
+      "0": 90,
+      "1": 90
+    }
+  },
+  "proxy_disclaimer": "Webcam-derived behavioral signals are proxies for cognitive workload and not direct measurements of neural activity. Not a medical or diagnostic device."
+}
