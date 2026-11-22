@@ -1,205 +1,768 @@
-/* Clean, modern, responsive styles for Cogload UI */
+/* ==========================================================================
+   COGLOAD DESIGN SYSTEM
+   Professional Instrumentation & Spatial 3D UI
+   Crafted with Apple / Adobe Pro Hardware Aesthetic Standards
+   ========================================================================== */
 
 :root {
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
-  --bg-card: #1e293b;
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --accent-blue: #38bdf8;
-  --color-low: #22c55e;
-  --color-med: #eab308;
-  --color-high: #ef4444;
-  --border-color: #334155;
-  --radius: 10px;
+  /* Surface Palette: Deep Optical Obsidian & Machined Titanium */
+  --chassis-base: #06080B;
+  --chassis-elevated: #0C0F17;
+  --surface-panel: #121620;
+  --surface-panel-hover: #161B27;
+  --surface-well: #080A0F;
+  --surface-sunken: #050608;
+  
+  /* Physical Bezel & Rim Lighting */
+  --rim-highlight: rgba(255, 255, 255, 0.08);
+  --rim-highlight-crisp: rgba(255, 255, 255, 0.14);
+  --rim-shadow: rgba(0, 0, 0, 0.7);
+  --panel-border: 1px solid rgba(255, 255, 255, 0.07);
+  --panel-border-subtle: 1px solid rgba(255, 255, 255, 0.04);
+  
+  /* Typography & Readout Hues */
+  --text-primary: #F0F4F8;
+  --text-secondary: #94A3B8;
+  --text-tertiary: #64748B;
+  --text-dim: #475569;
+  
+  /* Precision Instrument Signal Hues (Non-neon, calibrated) */
+  --signal-emerald: #10B981;
+  --signal-emerald-glow: rgba(16, 185, 129, 0.28);
+  --signal-amber: #F59E0B;
+  --signal-amber-glow: rgba(245, 158, 11, 0.28);
+  --signal-ruby: #EF4444;
+  --signal-ruby-glow: rgba(239, 68, 68, 0.28);
+  --signal-sapphire: #0EA5E9;
+  --signal-sapphire-glow: rgba(14, 165, 233, 0.28);
+  
+  /* Geometry & Lighting Dynamics */
+  --radius-chassis: 16px;
+  --radius-panel: 12px;
+  --radius-meter: 6px;
+  --shadow-elevation-1: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 1px 0 var(--rim-highlight);
+  --shadow-elevation-2: 0 12px 32px -4px rgba(0, 0, 0, 0.65), 0 2px 6px rgba(0, 0, 0, 0.4), inset 0 1px 0 var(--rim-highlight-crisp);
+  --shadow-elevation-3: 0 24px 48px -8px rgba(0, 0, 0, 0.8), 0 4px 12px rgba(0, 0, 0, 0.5), inset 0 1px 0 var(--rim-highlight-crisp);
+  --shadow-sunken-well: inset 0 2px 5px rgba(0, 0, 0, 0.85), inset 0 0 0 1px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
-* {
+/* Base Reset & Typography Setup */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background-color: var(--bg-primary);
-  color: var(--text-main);
-  padding: 1.5rem;
+  background-color: var(--chassis-base);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   line-height: 1.5;
+  padding: 1.5rem;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(20, 35, 60, 0.25) 0%, transparent 70%),
+    radial-gradient(circle at 100% 100%, rgba(10, 20, 35, 0.2) 0%, transparent 50%);
+}
+
+/* Subtle architectural spatial grid background */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1240px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
+
+/* Tabular Numerals across all dynamic telemetry */
+.tabular-nums, strong, .tile-value, #fps-badge, #confidence-val, #score-val {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* ==========================================================================
+   HEADER CONSOLE
+   ========================================================================== */
 
 .app-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1rem;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid var(--border-color);
+  gap: 1.25rem;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(180deg, rgba(22, 28, 40, 0.6) 0%, rgba(14, 18, 27, 0.8) 100%);
+  border: var(--panel-border);
+  border-radius: var(--radius-chassis);
+  box-shadow: var(--shadow-elevation-1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   margin-bottom: 1.25rem;
 }
 
-.app-header h1 {
-  font-size: 1.5rem;
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand-aperture {
+  width: 36px;
+  height: 36px;
+  background: radial-gradient(circle at 35% 35%, #1e293b, #090d16);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 10px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.aperture-core {
+  width: 14px;
+  height: 14px;
+  background: var(--signal-sapphire);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--signal-sapphire-glow), inset 0 1px 2px rgba(255, 255, 255, 0.6);
+  animation: pulse-slow 3s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-slow {
+  0% { transform: scale(0.92); opacity: 0.85; }
+  100% { transform: scale(1.05); opacity: 1; }
+}
+
+.brand-text h1 {
+  font-size: 1.25rem;
   font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.brand-badge {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.5rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  color: var(--text-secondary);
 }
 
 .subtitle {
-  color: var(--text-muted);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  margin-top: 0.15rem;
 }
 
 .header-chips {
   display: flex;
   gap: 0.5rem;
+  align-items: center;
   flex-wrap: wrap;
 }
 
+/* Micro-Telemetry Status Chips */
 .chip {
-  padding: 0.25rem 0.6rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.72rem;
   font-weight: 600;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
+  background: var(--surface-well);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--text-secondary);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.03);
+  transition: all 0.25s ease;
 }
 
-.chip-success { background: #166534; color: #4ade80; }
-.chip-warning { background: #854d0e; color: #facc15; }
-.chip-danger { background: #991b1b; color: #f87171; }
-.chip-info { background: #075985; color: #38bdf8; }
-.chip-muted { background: #334155; color: #94a3b8; }
+.chip::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.chip-success {
+  color: #34D399;
+  border-color: rgba(52, 211, 153, 0.25);
+  background: rgba(6, 78, 59, 0.25);
+}
+.chip-success::before {
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.6);
+}
+
+.chip-warning {
+  color: #FBBF24;
+  border-color: rgba(251, 191, 36, 0.25);
+  background: rgba(120, 53, 15, 0.25);
+}
+.chip-warning::before {
+  box-shadow: 0 0 8px rgba(251, 191, 36, 0.6);
+}
+
+.chip-danger {
+  color: #F87171;
+  border-color: rgba(248, 113, 113, 0.25);
+  background: rgba(127, 29, 29, 0.25);
+}
+
+.chip-info {
+  color: #38BDF8;
+  border-color: rgba(56, 189, 248, 0.25);
+  background: rgba(12, 74, 110, 0.25);
+}
+
+.chip-muted {
+  color: var(--text-tertiary);
+}
+
+/* ==========================================================================
+   REGULATORY / BIO-SAFETY DISCLAIMER (Precision HUD Banner)
+   ========================================================================== */
 
 .disclaimer-banner {
-  background: #1e1b4b;
-  border: 1px solid #4338ca;
-  color: #c7d2fe;
-  padding: 0.75rem 1rem;
-  border-radius: var(--radius);
-  font-size: 0.85rem;
+  background: linear-gradient(90deg, rgba(30, 27, 75, 0.4) 0%, rgba(15, 23, 42, 0.6) 100%);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  border-left: 3px solid #818CF8;
+  color: #C7D2FE;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-panel);
+  font-size: 0.8rem;
+  line-height: 1.45;
   margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: var(--shadow-elevation-1);
 }
+
+.disclaimer-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   PRIMARY 3D DASHBOARD GRID & TILT CARDS
+   ========================================================================== */
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1.35fr 1fr;
   gap: 1.25rem;
   margin-bottom: 1.25rem;
+  perspective: 1200px;
 }
 
-@media (max-width: 860px) {
+@media (max-width: 960px) {
   .dashboard-grid {
     grid-template-columns: 1fr;
   }
 }
 
+/* 3D Physical Card Chassis */
 .card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  padding: 1.25rem;
-}
-
-.card h2 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.8rem;
-}
-
-.hero-status {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 1.2rem;
-}
-
-.load-badge {
-  font-size: 2rem;
-  font-weight: 800;
-  padding: 0.6rem 1.8rem;
-  border-radius: var(--radius);
-  letter-spacing: 0.05em;
-}
-
-.load-low { background: var(--color-low); color: #052e16; }
-.load-med { background: var(--color-med); color: #422006; }
-.load-high { background: var(--color-high); color: #450a0a; }
-
-.load-details .metric-row {
-  margin-bottom: 0.4rem;
-  font-size: 0.95rem;
-}
-
-.gauge-wrapper {
-  margin-top: 1rem;
-}
-
-.gauge-labels {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  margin-bottom: 0.3rem;
-}
-
-.gauge-track {
-  width: 100%;
-  height: 12px;
-  background: #334155;
-  border-radius: 6px;
+  background: linear-gradient(165deg, rgba(22, 27, 39, 0.85) 0%, rgba(13, 16, 25, 0.95) 100%);
+  border: var(--panel-border);
+  border-radius: var(--radius-chassis);
+  padding: 1.5rem;
+  position: relative;
+  box-shadow: var(--shadow-elevation-2);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+  transform-style: preserve-3d;
   overflow: hidden;
 }
 
-.gauge-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #22c55e, #eab308, #ef4444);
-  transition: width 0.4s ease;
+/* Specular Light Sheen Reflection that moves on hover */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 0%), rgba(255, 255, 255, 0.05) 0%, transparent 60%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
 }
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: var(--shadow-elevation-3);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.card-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-title::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 12px;
+  background: var(--signal-sapphire);
+  border-radius: 2px;
+}
+
+/* ==========================================================================
+   HERO LOAD ANALYZER UNIT
+   ========================================================================== */
+
+.hero-status-cluster {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  background: var(--surface-well);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-panel);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sunken-well);
+}
+
+/* 3D Illuminated Tactile Load Badge */
+.load-badge-container {
+  perspective: 600px;
+}
+
+.load-badge {
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 0.85rem 2rem;
+  border-radius: 10px;
+  min-width: 140px;
+  text-align: center;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateZ(10px);
+}
+
+.load-low {
+  background: linear-gradient(180deg, #065F46 0%, #064E3B 100%);
+  color: #D1FAE5;
+  border: 1px solid rgba(52, 211, 153, 0.4);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.5),
+    0 8px 24px -4px rgba(6, 95, 70, 0.6),
+    0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.load-med {
+  background: linear-gradient(180deg, #92400E 0%, #78350F 100%);
+  color: #FEF3C7;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.5),
+    0 8px 24px -4px rgba(146, 64, 14, 0.6),
+    0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.load-high {
+  background: linear-gradient(180deg, #991B1B 0%, #7F1D1D 100%);
+  color: #FEE2E2;
+  border: 1px solid rgba(248, 113, 113, 0.4);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.5),
+    0 8px 24px -4px rgba(153, 27, 27, 0.6),
+    0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.load-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex: 1;
+}
+
+.metric-readout {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+  padding-bottom: 0.35rem;
+}
+
+.metric-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.metric-value {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   20-SEGMENT TACTILE LED BAR INSTRUMENT
+   ========================================================================== */
+
+.gauge-section {
+  margin-top: 1.25rem;
+}
+
+.gauge-scale-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+  margin-bottom: 0.5rem;
+}
+
+/* Sunken 3D Well housing 20 mechanical LED segments */
+.meter-well {
+  background: #050609;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 8px 10px;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.9), 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.segment-grid {
+  display: grid;
+  grid-template-columns: repeat(20, 1fr);
+  gap: 4px;
+  height: 16px;
+}
+
+.segment {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: all 0.15s ease-out;
+  position: relative;
+}
+
+/* Active Segment Phosphorescent States */
+.segment.lit-low {
+  background: var(--signal-emerald);
+  box-shadow: 0 0 10px var(--signal-emerald-glow), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+.segment.lit-med {
+  background: var(--signal-amber);
+  box-shadow: 0 0 10px var(--signal-amber-glow), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+.segment.lit-high {
+  background: var(--signal-ruby);
+  box-shadow: 0 0 10px var(--signal-ruby-glow), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+/* Dynamic Warnings Annunciator Box */
+.warnings-box {
+  margin-top: 1.25rem;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(90deg, rgba(69, 26, 3, 0.6) 0%, rgba(41, 14, 2, 0.8) 100%);
+  border: 1px solid #D97706;
+  border-left: 3px solid #F59E0B;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  color: #FDE68A;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   CAMERA VIEWFINDER CONSOLE
+   ========================================================================== */
+
+.viewfinder-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.viewfinder-outer {
+  background: #040508;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-panel);
+  position: relative;
+  overflow: hidden;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.95), 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+#live-canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: contrast(102%) brightness(98%);
+}
+
+/* Camera HUD Viewfinder Reticles (CNC corner marks) */
+.reticle {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: rgba(56, 189, 248, 0.6);
+  border-style: solid;
+  pointer-events: none;
+  z-index: 5;
+}
+.reticle-tl { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+.reticle-tr { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
+.reticle-bl { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
+.reticle-br { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+.viewfinder-meta {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  font-size: 0.68rem;
+  font-family: monospace;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--signal-sapphire);
+  letter-spacing: 0.05em;
+  z-index: 6;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+/* Controls below camera */
+.viewfinder-controls {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Tactile Push Buttons (Apple Pro Machined Feel) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.84rem;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  text-align: center;
+  user-select: none;
+}
+
+.btn:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, #0284C7 0%, #0369A1 100%);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 4px 12px rgba(2, 132, 199, 0.4),
+    0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(180deg, #0369A1 0%, #075985 100%);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 6px 16px rgba(2, 132, 199, 0.5);
+}
+
+.btn-secondary {
+  background: linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(180deg, #334155 0%, #1E293B 100%);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.switch-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.switch-label input[type="checkbox"] {
+  accent-color: var(--signal-sapphire);
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   PRECISION TELEMETRY INSTRUMENT TILES
+   ========================================================================== */
 
 .indicators-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1.25rem;
   margin-bottom: 1.25rem;
+  perspective: 1200px;
 }
 
 .indicator-tile {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  padding: 1rem;
+  background: linear-gradient(165deg, rgba(20, 25, 36, 0.7) 0%, rgba(10, 13, 20, 0.85) 100%);
+  border: var(--panel-border);
+  border-radius: var(--radius-panel);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-elevation-1);
+  position: relative;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+  transform-style: preserve-3d;
+  cursor: default;
+  overflow: hidden;
+}
+
+.indicator-tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(400px circle at var(--tile-x, 50%) var(--tile-y, 0%), rgba(255, 255, 255, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.indicator-tile:hover {
+  transform: translateY(-2px) scale3d(1.01, 1.01, 1.01);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: var(--shadow-elevation-2);
+}
+
+.indicator-tile:hover::before {
+  opacity: 1;
+}
+
+.tile-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
 }
 
 .tile-title {
-  font-size: 0.8rem;
-  color: var(--text-muted);
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.tile-badge-icon {
+  color: var(--text-dim);
+  font-size: 0.8rem;
 }
 
 .tile-value {
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin: 0.3rem 0;
+  font-size: 2.1rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #FFFFFF;
+  line-height: 1.1;
+  margin: 0.2rem 0 0.5rem 0;
 }
 
 .tile-value .unit {
-  font-size: 0.9rem;
-  font-weight: normal;
-  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  margin-left: 0.15rem;
 }
 
+/* Precision Delta Pill */
 .tile-delta {
-  font-size: 0.75rem;
-  color: var(--accent-blue);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: rgba(14, 165, 233, 0.1);
+  border: 1px solid rgba(14, 165, 233, 0.2);
+  color: #38BDF8;
 }
+
+/* ==========================================================================
+   CHRONO-TELEMETRY TIMELINE CARD (Chart.js Console)
+   ========================================================================== */
 
 .chart-card {
-  padding: 1.25rem;
+  padding: 1.5rem;
 }
 
 .chart-header {
@@ -209,78 +772,101 @@ body {
   margin-bottom: 1rem;
 }
 
+.chart-header h2 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+}
+
+.chart-legend-badge {
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+  background: var(--surface-well);
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
 .chart-container {
-  height: 240px;
+  height: 220px;
+  position: relative;
+  background: #07090E;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 10px;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.7);
+}
+
+/* ==========================================================================
+   CALIBRATION PAGE & EXPERIMENT TASKS
+   ========================================================================== */
+
+.calib-container {
+  max-width: 860px;
+}
+
+.calib-card {
+  padding: 2rem;
+}
+
+.calib-steps li {
+  margin-bottom: 0.6rem;
+  line-height: 1.5;
+}
+
+.text-input {
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: var(--signal-sapphire) !important;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
+}
+
+.fixation-cross-container {
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.95);
   position: relative;
 }
 
-.btn {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  text-decoration: none;
-  cursor: pointer;
-  border: none;
-  transition: opacity 0.2s;
-}
-
-.btn:hover { opacity: 0.9; }
-.btn-primary { background: var(--accent-blue); color: #082f49; }
-.btn-secondary { background: #334155; color: var(--text-main); }
-.btn-large { padding: 0.75rem 1.5rem; font-size: 1rem; }
-
-.btn-group {
-  display: flex;
-  gap: 0.5rem;
-  margin: 1rem 0;
-  flex-wrap: wrap;
-}
-
-.text-sm { font-size: 0.85rem; color: var(--text-muted); }
-.hidden { display: none !important; }
-
-/* Calibration page */
-.fixation-cross-container {
-  height: 250px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .fixation-cross {
-  font-size: 4rem;
-  color: #38bdf8;
-  font-weight: 300;
+  animation: pulse-cross 2s infinite ease-in-out;
+}
+
+@keyframes pulse-cross {
+  0% { transform: scale(0.96); opacity: 0.8; }
+  50% { transform: scale(1.04); opacity: 1; }
+  100% { transform: scale(0.96); opacity: 0.8; }
 }
 
 .progress-bar-wrapper {
-  background: #334155;
+  background: #090D16;
   height: 12px;
   border-radius: 6px;
   overflow: hidden;
-  margin: 1rem 0;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 .progress-bar-fill {
-  background: var(--accent-blue);
+  background: linear-gradient(90deg, #0284C7, #38BDF8);
   height: 100%;
-  transition: width 0.3s;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
 }
 
 .stimulus-area {
-  height: 200px;
-  background: #090d16;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 1.5rem 0;
+  background: #05070C;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 3px 12px rgba(0, 0, 0, 0.9);
 }
 
 .stimulus-letter {
-  font-size: 5rem;
-  font-weight: 800;
-  color: #f8fafc;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+  letter-spacing: -0.03em;
 }
+
+/* Accessibility & Utility */
+.hidden { display: none !important; }

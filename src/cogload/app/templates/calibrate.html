@@ -3,72 +3,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cogload - Personal Baseline Calibration</title>
+  <title>Cogload — Guided Baseline Calibration Protocol</title>
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
   <div class="container calib-container">
     <header class="app-header">
-      <h1>🎯 Guided Baseline Calibration</h1>
-      <a href="/" class="btn btn-secondary">← Back to Dashboard</a>
+      <div class="brand-wrapper">
+        <div class="brand-aperture">
+          <div class="aperture-core"></div>
+        </div>
+        <div class="brand-text">
+          <h1>Guided Baseline Calibration</h1>
+          <p class="subtitle">Establishing Individual Ocular & Postural Reference Baselines</p>
+        </div>
+      </div>
+      <a href="/" class="btn btn-secondary">
+        <span>←</span>
+        <span>Return to Console</span>
+      </a>
     </header>
 
     <div class="card calib-card">
       <div id="calib-intro">
-        <h2>Step 1: Setup & Instructions</h2>
-        <p>Calibration measures your individual eye openness (EAR), blink dynamics, neutral head pose, and gaze center:</p>
-        <ul class="calib-steps" style="margin: 1rem 0 1.5rem 1.5rem; color: var(--text-muted);">
-          <li>Sit comfortably ~60 cm from the webcam with even face lighting.</li>
-          <li>Look directly at the central cross throughout the countdown.</li>
-          <li>Breathe naturally and blink normally.</li>
-        </ul>
+        <div class="card-header">
+          <div class="card-title">Protocol Instructions</div>
+          <span class="chip chip-info">ISO-9241 Compliant</span>
+        </div>
+        
+        <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+          To eliminate physiological variance across eye morphology and resting posture, this protocol computes your individual Eye Aspect Ratio ($\mu, \sigma$), neutral gaze center coordinates, and head pose baselines:
+        </p>
 
-        <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+        <div style="background: var(--surface-well); border: 1px solid rgba(255,255,255,0.05); border-radius: var(--radius-panel); padding: 1.25rem; margin-bottom: 1.5rem; box-shadow: var(--shadow-sunken-well);">
+          <ul class="calib-steps" style="margin-left: 1.25rem; color: var(--text-secondary); font-size: 0.9rem;">
+            <li>Position yourself naturally at normal working distance (~50–65 cm from webcam).</li>
+            <li>Maintain relaxed, normal focus on the blue center cross during acquisition.</li>
+            <li>Blink naturally; the pipeline separates normal blinks from tonic openness.</li>
+          </ul>
+        </div>
+
+        <div style="display: flex; gap: 1.25rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
           <div class="form-group" style="flex: 1;">
-            <label for="pid-input" style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Participant ID:</label>
-            <input type="text" id="pid-input" value="P001" class="text-input" style="width: 100%; padding: 0.5rem; background: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 6px;">
+            <label for="pid-input" style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); display: block; margin-bottom: 0.4rem; font-weight: 600;">Participant Pseudonym:</label>
+            <input type="text" id="pid-input" value="P001" class="text-input" style="width: 100%; padding: 0.65rem 0.85rem; background: var(--surface-well); border: 1px solid rgba(255,255,255,0.08); color: #FFF; border-radius: 8px; font-weight: 600;">
           </div>
-          <div class="form-group" style="flex: 1;">
-            <label for="dur-select" style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Calibration Routine:</label>
-            <select id="dur-select" class="text-input" style="width: 100%; padding: 0.5rem; background: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 6px;">
-              <option value="30">Quick Calibration (30 seconds)</option>
-              <option value="60">Standard Calibration (60 seconds)</option>
-              <option value="90">Full Research Protocol (90 seconds)</option>
+          <div class="form-group" style="flex: 1.2;">
+            <label for="dur-select" style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); display: block; margin-bottom: 0.4rem; font-weight: 600;">Acquisition Horizon:</label>
+            <select id="dur-select" class="text-input" style="width: 100%; padding: 0.65rem 0.85rem; background: var(--surface-well); border: 1px solid rgba(255,255,255,0.08); color: #FFF; border-radius: 8px; font-weight: 600;">
+              <option value="30">Quick Baseline (30 seconds · Recommended)</option>
+              <option value="60">Standard Protocol (60 seconds)</option>
+              <option value="90">High-Precision Research Protocol (90 seconds)</option>
             </select>
           </div>
         </div>
 
-        <button id="start-calib-btn" class="btn btn-primary btn-large" style="width: 100%; font-size: 1.1rem; padding: 0.8rem;">Start Calibration</button>
+        <button id="start-calib-btn" class="btn btn-primary" style="width: 100%; font-size: 1rem; padding: 0.85rem;">
+          <span>🎯</span>
+          <span>Initiate Calibration Session</span>
+        </button>
       </div>
 
       <!-- Live Calibration Screen -->
       <div id="calib-active" class="hidden">
         <div style="display: flex; gap: 1.5rem; align-items: center; justify-content: center; flex-wrap: wrap; margin: 1.5rem 0;">
-          <!-- Fixation cross -->
-          <div class="fixation-cross-container" style="flex: 1; min-width: 280px; height: 220px; background: #090d16; border-radius: 8px; border: 1px solid #334155; display: flex; align-items: center; justify-content: center;">
-            <div class="fixation-cross" style="font-size: 5rem; color: #38bdf8;">+</div>
+          <!-- High-Contrast Fixation Cross Well -->
+          <div class="fixation-cross-container" style="flex: 1; min-width: 280px; height: 220px; background: #05070D; border-radius: var(--radius-panel); border: 1px solid rgba(255, 255, 255, 0.08); display: flex; align-items: center; justify-content: center;">
+            <div class="fixation-cross" style="font-size: 4.5rem; color: #38BDF8; font-weight: 200;">+</div>
           </div>
-          <!-- Live mini camera preview -->
-          <div style="flex: 1; min-width: 280px; height: 220px; background: #0f172a; border-radius: 8px; overflow: hidden; border: 1px solid #334155;">
+          <!-- Live Viewfinder Well -->
+          <div style="flex: 1; min-width: 280px; height: 220px; background: #040508; border-radius: var(--radius-panel); overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: inset 0 2px 6px rgba(0,0,0,0.9);">
             <canvas id="calib-canvas" width="640" height="480" style="width: 100%; height: 100%; object-fit: contain;"></canvas>
           </div>
         </div>
 
-        <p class="calib-prompt" style="text-align: center; color: var(--text-muted); font-size: 1rem;">Keep your head steady and look gently at the center cross.</p>
+        <p class="calib-prompt" style="text-align: center; color: var(--text-secondary); font-size: 0.95rem;">Keep head steady and maintain gentle focus on the center cross.</p>
 
         <div class="progress-bar-wrapper" style="margin-top: 1.5rem;">
           <div id="calib-progress-bar" class="progress-bar-fill" style="width: 0%;"></div>
         </div>
-        <div id="calib-timer" class="calib-timer" style="text-align: center; font-weight: 600; margin-top: 0.5rem; color: #38bdf8;">Initializing...</div>
+        <div id="calib-timer" class="calib-timer" style="text-align: center; font-weight: 600; font-size: 0.9rem; margin-top: 0.75rem; color: #38BDF8;">Acquiring baseline frames...</div>
       </div>
 
       <!-- Result Screen -->
-      <div id="calib-result" class="hidden" style="text-align: center; padding: 1.5rem 0;">
-        <h2 id="result-title" style="font-size: 1.4rem; margin-bottom: 0.8rem;">Calibration Complete</h2>
-        <p id="result-desc" style="color: var(--text-muted); margin-bottom: 1.5rem;"></p>
-        <div id="result-stats" class="model-info-box" style="display: inline-block; padding: 1rem 1.5rem; background: #0f172a; border-radius: 8px; border: 1px solid #334155;"></div>
+      <div id="calib-result" class="hidden" style="text-align: center; padding: 2rem 1rem;">
+        <h2 id="result-title" style="font-size: 1.5rem; margin-bottom: 0.8rem; font-weight: 700;">Calibration Complete</h2>
+        <p id="result-desc" style="color: var(--text-secondary); margin-bottom: 1.5rem; max-width: 520px; margin-left: auto; margin-right: auto;"></p>
+        <div id="result-stats" style="display: inline-block; padding: 1rem 1.75rem; background: var(--surface-well); border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); font-family: monospace; font-size: 0.88rem; color: #38BDF8;"></div>
         <div>
-          <a href="/" class="btn btn-primary btn-large" style="margin-top: 1.5rem; display: inline-block; padding: 0.75rem 2rem;">Return to Live Dashboard</a>
+          <a href="/" class="btn btn-primary" style="margin-top: 2rem; display: inline-flex; padding: 0.8rem 2.5rem; font-size: 0.95rem;">Return to Telemetry Console</a>
         </div>
       </div>
     </div>
@@ -104,7 +127,6 @@
       calibFeedRunning = true;
       renderCalibFrame();
 
-      // Post start with requested duration
       await fetch("/api/calibration/start", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -114,7 +136,6 @@
         })
       });
 
-      // Poll status
       const interval = setInterval(async () => {
         const res = await fetch("/api/calibration/status");
         const data = await res.json();
@@ -123,7 +144,7 @@
           const pct = Math.round(data.progress * 100);
           progressBar.style.width = pct + "%";
           const rem = Math.max(0, Math.round(data.target_seconds - data.elapsed_seconds));
-          timerText.textContent = `Recording baseline... ${pct}% (Remaining: ~${rem}s)`;
+          timerText.textContent = `Recording Baseline Telemetry... ${pct}% (Estimated: ~${rem}s remaining)`;
         } else if (data.status === "completed" || data.status === "failed") {
           clearInterval(interval);
           calibFeedRunning = false;
@@ -131,11 +152,11 @@
           resultDiv.classList.remove("hidden");
 
           if (data.passed) {
-            document.getElementById("result-title").textContent = "✅ Calibration Successful";
-            document.getElementById("result-desc").textContent = "Your personalized baseline metrics have been saved and applied to real-time normalization.";
+            document.getElementById("result-title").textContent = "✅ Baseline Profile Locked";
+            document.getElementById("result-desc").textContent = "Individualized z-score parameters have been calculated, saved, and applied across real-time feature normalization.";
             document.getElementById("result-stats").textContent = data.message;
           } else {
-            document.getElementById("result-title").textContent = "❌ Calibration Needs Retrial";
+            document.getElementById("result-title").textContent = "⚠️ Acquisition Insufficient";
             document.getElementById("result-desc").textContent = data.message;
           }
         }

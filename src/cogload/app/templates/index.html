@@ -3,126 +3,202 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cogload - Real-Time Cognitive Load Estimation</title>
+  <title>Cogload — Real-Time Cognitive Load Estimation Console</title>
   <link rel="stylesheet" href="/static/css/style.css">
   <script src="/static/vendor/chart.min.js"></script>
 </head>
 <body>
   <div class="container">
-    <!-- Header -->
+    <!-- Header Console -->
     <header class="app-header">
-      <div class="header-left">
-        <h1>🧠 Cogload <span class="tag">Live Behavioral Monitor</span></h1>
-        <p class="subtitle">Real-Time Cognitive Load Estimation via Facial & Ocular Signals</p>
+      <div class="brand-wrapper">
+        <div class="brand-aperture">
+          <div class="aperture-core"></div>
+        </div>
+        <div class="brand-text">
+          <h1>Cogload <span class="brand-badge">PRO v2.4</span></h1>
+          <p class="subtitle">Bio-Inspired Cognitive Workload Monitor · 478-Point Spatial Telemetry</p>
+        </div>
       </div>
+      
       <div class="header-chips">
         <span id="chip-camera" class="chip chip-success">Camera Active</span>
-        <span id="chip-face" class="chip chip-warning">Detecting Face...</span>
-        <span id="chip-calib" class="chip chip-muted">Uncalibrated</span>
-        <span id="chip-model" class="chip chip-success">Model Loaded</span>
-        <span id="fps-badge" class="chip chip-info">-- FPS</span>
+        <span id="chip-face" class="chip chip-warning">Acquiring Face...</span>
+        <span id="chip-calib" class="chip chip-muted">Uncalibrated Baseline</span>
+        <span id="chip-model" class="chip chip-success">Model Online</span>
+        <span id="fps-badge" class="chip chip-info">30.0 FPS</span>
       </div>
     </header>
 
-    <!-- Mandatory Proxy Disclaimer -->
+    <!-- Regulatory / Bio-Safety Proxy Disclaimer (Precision HUD Banner) -->
     <div class="disclaimer-banner">
-      ⚠️ <strong>Important:</strong> Estimates are based on behavioral proxies from the webcam (blink frequency, gaze variation, head motion) and are <em>not</em> a direct measurement of brain activity or mental ability. Not for clinical or diagnostic use.
+      <span class="disclaimer-icon">⚠️</span>
+      <div>
+        <strong>Bio-Safety Advisory:</strong> Estimates are based on behavioral proxies from the webcam (blink frequency, gaze variation, head motion) and are <em>not</em> a direct measurement of brain activity or mental ability. Not for clinical or diagnostic use.
+      </div>
     </div>
 
-    <!-- Live Preview & Main Grid -->
+    <!-- Primary 3D Dashboard Grid -->
     <div class="dashboard-grid">
-      <!-- Hero Load Card -->
-      <div class="card hero-card">
-        <h2>Cognitive Load State</h2>
-        <div class="hero-status">
-          <div id="load-badge" class="load-badge load-low">LOW</div>
+      <!-- Left Chassis: Cognitive Workload Analyzer -->
+      <div class="card hero-card" id="card-hero">
+        <div class="card-header">
+          <div class="card-title">Cognitive Load State</div>
+          <span class="chip chip-muted" style="font-size: 0.68rem;">Continuous EMA Inference</span>
+        </div>
+
+        <div class="hero-status-cluster">
+          <div class="load-badge-container">
+            <div id="load-badge" class="load-badge load-low">LOW</div>
+          </div>
+          
           <div class="load-details">
-            <div class="metric-row">
-              <span class="label">Confidence:</span>
-              <strong id="confidence-val">--%</strong>
+            <div class="metric-readout">
+              <span class="metric-label">Model Confidence</span>
+              <span class="metric-value" id="confidence-val">--%</span>
             </div>
-            <div class="metric-row">
-              <span class="label">Continuous Workload:</span>
-              <strong id="score-val">0.00</strong>
+            <div class="metric-readout">
+              <span class="metric-label">Continuous Score</span>
+              <span class="metric-value" id="score-val">0.00</span>
             </div>
           </div>
         </div>
 
-        <!-- Gauge Bar -->
-        <div class="gauge-wrapper">
-          <div class="gauge-labels">
-            <span>Low (Relaxed)</span>
-            <span>Medium (Active)</span>
-            <span>High (Strained)</span>
+        <!-- 20-Segment Physical Tactile LED Meter -->
+        <div class="gauge-section">
+          <div class="gauge-scale-header">
+            <span>Relaxed (0.00)</span>
+            <span>Active Engagement (0.50)</span>
+            <span>High Strain (1.00)</span>
           </div>
-          <div class="gauge-track">
-            <div id="gauge-fill" class="gauge-fill" style="width: 15%;"></div>
+          <div class="meter-well">
+            <div class="segment-grid" id="segment-grid">
+              <!-- 20 physical illuminated segments generated dynamically or in static DOM -->
+              <div class="segment" data-idx="0"></div>
+              <div class="segment" data-idx="1"></div>
+              <div class="segment" data-idx="2"></div>
+              <div class="segment" data-idx="3"></div>
+              <div class="segment" data-idx="4"></div>
+              <div class="segment" data-idx="5"></div>
+              <div class="segment" data-idx="6"></div>
+              <div class="segment" data-idx="7"></div>
+              <div class="segment" data-idx="8"></div>
+              <div class="segment" data-idx="9"></div>
+              <div class="segment" data-idx="10"></div>
+              <div class="segment" data-idx="11"></div>
+              <div class="segment" data-idx="12"></div>
+              <div class="segment" data-idx="13"></div>
+              <div class="segment" data-idx="14"></div>
+              <div class="segment" data-idx="15"></div>
+              <div class="segment" data-idx="16"></div>
+              <div class="segment" data-idx="17"></div>
+              <div class="segment" data-idx="18"></div>
+              <div class="segment" data-idx="19"></div>
+            </div>
           </div>
         </div>
 
-        <!-- Warnings strip -->
-        <div id="warnings-box" class="warnings-box hidden" style="margin-top: 1rem; padding: 0.6rem; background: #451a03; border: 1px solid #b45309; border-radius: 6px; font-size: 0.85rem; color: #fde68a;">
+        <!-- Dynamic Warnings HUD Annunciator Box -->
+        <div id="warnings-box" class="warnings-box hidden">
+          <span style="font-size: 1.1rem; line-height: 1;">⚡</span>
           <span id="warning-text"></span>
         </div>
       </div>
 
-      <!-- Live Video Feed Card -->
-      <div class="card video-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-          <h2>Live Tracking Feed</h2>
-          <label style="font-size: 0.8rem; color: var(--text-muted); cursor: pointer;">
-            <input type="checkbox" id="toggle-overlay" checked> Show Landmarks
+      <!-- Right Chassis: Machined Camera Viewfinder Console -->
+      <div class="card viewfinder-card" id="card-viewfinder">
+        <div class="card-header">
+          <div class="card-title">Live Tracking Viewfinder</div>
+          <label class="switch-label">
+            <input type="checkbox" id="toggle-overlay" checked>
+            <span>Landmark Mesh</span>
           </label>
         </div>
-        <div class="video-container" style="background: #0f172a; border-radius: 8px; overflow: hidden; height: 180px; display: flex; align-items: center; justify-content: center; position: relative;">
-          <canvas id="live-canvas" width="640" height="480" style="width: 100%; height: 100%; object-fit: contain;"></canvas>
+
+        <div class="viewfinder-outer">
+          <!-- Physical HUD Reticles -->
+          <div class="reticle reticle-tl"></div>
+          <div class="reticle reticle-tr"></div>
+          <div class="reticle reticle-bl"></div>
+          <div class="reticle reticle-br"></div>
+          
+          <div class="viewfinder-meta">640×480 · 30 FPS</div>
+          
+          <canvas id="live-canvas" width="640" height="480"></canvas>
           <img id="live-video-stream" src="/api/video_feed?overlay=true" alt="Camera Feed" style="display: none;">
         </div>
-        <div class="btn-group" style="margin-top: 0.8rem;">
-          <a href="/calibrate" class="btn btn-primary" style="flex: 1; text-align: center;">🎯 Start Calibration (30s)</a>
-          <a href="/collect" class="btn btn-secondary" style="flex: 1; text-align: center;">🧪 Tasks (/collect)</a>
+
+        <div class="viewfinder-controls">
+          <a href="/calibrate" class="btn btn-primary" style="flex: 1.2;">
+            <span>🎯</span>
+            <span>Personal Calibration (30s)</span>
+          </a>
+          <a href="/collect" class="btn btn-secondary" style="flex: 1;">
+            <span>🧪</span>
+            <span>Tasks (/collect)</span>
+          </a>
         </div>
       </div>
     </div>
 
-    <!-- Indicator Tiles Grid -->
+    <!-- Precision Telemetry Instrument Tiles -->
     <div class="indicators-grid">
-      <div class="indicator-tile">
-        <span class="tile-title">Blink Rate</span>
+      <!-- Tile 1: Blink Dynamics -->
+      <div class="indicator-tile" id="tile-blink">
+        <div class="tile-top">
+          <span class="tile-title">Blink Rate</span>
+          <span class="tile-badge-icon">👁️</span>
+        </div>
         <div class="tile-value"><span id="ind-blink">--</span> <span class="unit">bpm</span></div>
         <div class="tile-delta" id="delta-blink">Δ baseline: --</div>
       </div>
 
-      <div class="indicator-tile">
-        <span class="tile-title">Eye Aspect Ratio (EAR)</span>
+      <!-- Tile 2: Eye Aspect Ratio -->
+      <div class="indicator-tile" id="tile-ear">
+        <div class="tile-top">
+          <span class="tile-title">Eye Aspect Ratio</span>
+          <span class="tile-badge-icon">📐</span>
+        </div>
         <div class="tile-value"><span id="ind-ear">--</span></div>
-        <div class="tile-delta" id="delta-ear">Openness proxy</div>
+        <div class="tile-delta" id="delta-ear">Openness Proxy</div>
       </div>
 
-      <div class="indicator-tile">
-        <span class="tile-title">Gaze Dispersion</span>
+      <!-- Tile 3: Gaze Dispersion -->
+      <div class="indicator-tile" id="tile-gaze">
+        <div class="tile-top">
+          <span class="tile-title">Gaze Dispersion</span>
+          <span class="tile-badge-icon">🎯</span>
+        </div>
         <div class="tile-value"><span id="ind-gaze">--</span></div>
         <div class="tile-delta" id="delta-gaze">Δ baseline: --</div>
       </div>
 
-      <div class="indicator-tile">
-        <span class="tile-title">Head Motion Speed</span>
+      <!-- Tile 4: Head Motion Velocity -->
+      <div class="indicator-tile" id="tile-head">
+        <div class="tile-top">
+          <span class="tile-title">Head Angular Velocity</span>
+          <span class="tile-badge-icon">🧭</span>
+        </div>
         <div class="tile-value"><span id="ind-head">--</span> <span class="unit">deg/s</span></div>
         <div class="tile-delta" id="delta-head">Δ baseline: --</div>
       </div>
 
-      <div class="indicator-tile">
-        <span class="tile-title">Facial Tension (Brow)</span>
+      <!-- Tile 5: Corrugator Facial Tension -->
+      <div class="indicator-tile" id="tile-tension">
+        <div class="tile-top">
+          <span class="tile-title">Brow Tension</span>
+          <span class="tile-badge-icon">⚡</span>
+        </div>
         <div class="tile-value"><span id="ind-tension">--</span></div>
         <div class="tile-delta" id="delta-tension">Δ baseline: --</div>
       </div>
     </div>
 
-    <!-- Timeline Chart -->
-    <div class="card chart-card">
+    <!-- Chrono-Telemetry Timeline Console -->
+    <div class="card chart-card" id="card-chart">
       <div class="chart-header">
-        <h2>Continuous Workload Timeline (Rolling 60-Sec Window)</h2>
-        <span class="chart-legend" style="font-size: 0.85rem; color: var(--text-muted);">0.0 (Relaxed) to 1.0 (High Effort)</span>
+        <h2>Continuous Chrono-Telemetry (Rolling 60-Second Window)</h2>
+        <span class="chart-legend-badge">Normalized Range: 0.00 (Relaxed) → 1.00 (Cognitive Strain)</span>
       </div>
       <div class="chart-container">
         <canvas id="timelineChart"></canvas>
