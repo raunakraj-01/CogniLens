@@ -22,6 +22,35 @@ document.addEventListener("DOMContentLoaded", () => {
   const warningsBox = document.getElementById("warnings-box");
   const warningText = document.getElementById("warning-text");
 
+  // Explainable AI (XAI) Attribution Selectors
+  const modTensionPct = document.getElementById("mod-tension-pct");
+  const modTensionFill = document.getElementById("mod-tension-fill");
+  const modGazePct = document.getElementById("mod-gaze-pct");
+  const modGazeFill = document.getElementById("mod-gaze-fill");
+  const modBlinkPct = document.getElementById("mod-blink-pct");
+  const modBlinkFill = document.getElementById("mod-blink-fill");
+  const modHeadPct = document.getElementById("mod-head-pct");
+  const modHeadFill = document.getElementById("mod-head-fill");
+  const driversList = document.getElementById("drivers-list");
+
+  // Closed-Loop Ergonomic & Adaptive Pacing Intervention Dock
+  const interventionDock = document.getElementById("intervention-dock");
+  const dismissedInterventions = new Set();
+
+  window.dismissIntervention = function(id) {
+    dismissedInterventions.add(id);
+    if (interventionDock) {
+      const banner = interventionDock.querySelector(`[data-id="${id}"]`);
+      if (banner) {
+        banner.style.opacity = "0";
+        banner.style.transform = "translateY(-8px)";
+        setTimeout(() => banner.remove(), 250);
+      }
+    }
+    // Allow re-alerting after 60 seconds
+    setTimeout(() => dismissedInterventions.delete(id), 60000);
+  };
+
   const toggleOverlay = document.getElementById("toggle-overlay");
   const liveCanvas = document.getElementById("live-canvas");
   const canvasCtx = liveCanvas ? liveCanvas.getContext("2d") : null;
@@ -278,6 +307,68 @@ document.addEventListener("DOMContentLoaded", () => {
       chartData.datasets[0].data.push(score);
       chartData.datasets[0].data.shift();
       timelineChart.update();
+
+      // Real-Time Explainable AI (XAI) Feature & Modality Attributions
+      if (data.attributions) {
+        if (data.attributions.modalities) {
+          const m = data.attributions.modalities;
+          const t = m.facial_tension !== undefined ? m.facial_tension : 25.0;
+          const g = m.gaze_dynamics !== undefined ? m.gaze_dynamics : 25.0;
+          const b = m.blink_fatigue !== undefined ? m.blink_fatigue : 25.0;
+          const h = m.head_pose !== undefined ? m.head_pose : 25.0;
+
+          if (modTensionPct) modTensionPct.textContent = `${t.toFixed(1)}%`;
+          if (modTensionFill) modTensionFill.style.width = `${Math.min(100, Math.max(0, t))}%`;
+
+          if (modGazePct) modGazePct.textContent = `${g.toFixed(1)}%`;
+          if (modGazeFill) modGazeFill.style.width = `${Math.min(100, Math.max(0, g))}%`;
+
+          if (modBlinkPct) modBlinkPct.textContent = `${b.toFixed(1)}%`;
+          if (modBlinkFill) modBlinkFill.style.width = `${Math.min(100, Math.max(0, b))}%`;
+
+          if (modHeadPct) modHeadPct.textContent = `${h.toFixed(1)}%`;
+          if (modHeadFill) modHeadFill.style.width = `${Math.min(100, Math.max(0, h))}%`;
+        }
+
+        if (data.attributions.top_drivers && driversList && data.attributions.top_drivers.length > 0) {
+          driversList.innerHTML = data.attributions.top_drivers.map((d) => `
+            <span class="driver-pill">
+              <span>${d.label}</span>
+              <span class="z-badge">${d.z_str}</span>
+            </span>
+          `).join("");
+        }
+      }
+
+      // Closed-Loop Ergonomic & Adaptive Pacing Interventions
+      if (interventionDock) {
+        const active = (data.interventions || []).filter(
+          (item) => !dismissedInterventions.has(item.id)
+        );
+
+        if (active.length === 0) {
+          interventionDock.innerHTML = "";
+        } else {
+          // Render active banners
+          interventionDock.innerHTML = active.map((item) => {
+            const isWarning = item.severity === "warning";
+            const icon = isWarning ? "⚡" : (item.id === "eye_strain" ? "👁️" : "🪑");
+            const bannerClass = isWarning ? "intervention-warning" : "intervention-info";
+            return `
+              <div class="intervention-banner ${bannerClass}" data-id="${item.id}">
+                <div class="intervention-body">
+                  <span class="intervention-icon">${icon}</span>
+                  <div>
+                    <div class="intervention-title">${item.title}</div>
+                    <div class="intervention-msg">${item.message}</div>
+                  </div>
+                </div>
+                <button class="intervention-btn" onclick="dismissIntervention('${item.id}')">${item.action || "Acknowledge"}</button>
+              </div>
+            `;
+          }).join("");
+        }
+      }
 
     } catch (err) {
       console.error("Error processing telemetry packet:", err);

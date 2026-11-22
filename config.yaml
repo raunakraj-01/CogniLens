@@ -40,6 +40,15 @@ artifacts:
   oral_brow_max_thresh: 0.28
   high_motion_speed_thresh: 45.0
 
+interventions:
+  enabled: true
+  high_load_streak_sec: 45.0
+  low_blink_streak_sec: 25.0
+  low_blink_bpm_thresh: 8.0
+  forward_pitch_thresh_deg: -12.0
+  posture_streak_sec: 30.0
+  cooldown_sec: 60.0
+
 server:
   host: 127.0.0.1
   port: 5050

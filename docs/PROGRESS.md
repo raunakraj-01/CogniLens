@@ -58,7 +58,7 @@
 - Prominent behavioral proxy disclaimer banners displayed across all pages.
 
 ### Phase 10 & 11: Evaluation, Reporting, & Hardening ✅
-- Full test suite passing across all modules (25 unit tests).
+- Full test suite passing across all modules (27 unit tests).
 - Robust oral activity (eating / chewing / speaking) artifact detection and suppression filter:
   - Outer lip vermilion landmarks (0, 17) used to avoid resting closed-lip zero division.
   - Inner lip mastication detector (`inner_gap / ipd > 0.04`) bounds mouth tension during open chewing.
@@ -68,5 +68,23 @@
 - Safari/macOS canvas video rendering with continuous single-frame fallback (`/api/frame`) delivering stable 30 FPS video with MediaPipe mesh debug overlay.
 - Full evaluation runner `scripts/run_eval.py` generating confusion matrices and ablation charts.
 - Empirical evaluation report `reports/report.md` generated.
-- Complete unit and integration test suite (24 tests) passing headless without webcam.
+- Complete unit and integration test suite passing headless without webcam.
+
+### Phase 12: Viva-Grade Capstone Extensions (Features 1 & 5) ✅
+- **Feature 1: Real-Time Explainable AI (XAI) Feature & Modality Attribution Console**:
+  - Computes continuous modality attribution across 4 core behavioral dimensions:
+    1. *Facial Muscle Tension* (corrugator supercilii brow furrowing, perioral mouth compression).
+    2. *Ocular Gaze & Saccades* (mean scanpath speed, 95th percentile saccadic peak, focal dispersion).
+    3. *Blink Dynamics & Fatigue* (blink frequency suppression, eye closure index / PERCLOS).
+    4. *Head Pose Dynamics* (cervical angular speed, pitch tremor, yaw variance).
+  - Lightweight linear attribution weighting ($\sum |z_i| \cdot w_i$) calculated at 1 Hz from model importances, running at zero GPU/SHAP overhead.
+  - Dynamic display in UI with animated progress meters and top primary signal drivers featuring directional standard-deviation deviation deltas (e.g. `+1.8σ`).
+- **Feature 5: Closed-Loop Ergonomic & Fatigue Intervention ("Adaptive Pacing")**:
+  - Implements real-time closed-loop behavioral interventions with hysteresis and cooldown control:
+    1. *Cognitive Strain Pacing Advisory*: Warns upon sustained elevated workload (`streak >= 45s`, score ≥ 0.70) recommending a 2-minute cognitive breather.
+    2. *Digital Eye Strain Alert (20-20-20 Rule)*: Warns upon sustained suppressed blink frequency (`< 8 bpm` for `streak >= 25s`) advising 20 seconds of distance viewing.
+    3. *Cervical Ergonomics Advisory*: Detects downward forward neck pitch (`< -12°` for `streak >= 30s`) advising display elevation.
+  - Fully configurable thresholds under `interventions:` in `config.yaml` and typed `InterventionConfig` dataclass in `config.py`.
+  - Actionable, dismissible alert dock in the Apple Pro / Adobe hardware console UI with client and server cooldown prevention.
+- Added comprehensive unit tests in `tests/test_realtime.py` covering attribution percentage normalizations, top driver extraction, streak accumulation, and alert cooldowns.
 

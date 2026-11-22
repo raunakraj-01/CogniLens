@@ -70,3 +70,5 @@ def test_flask_routes_and_api():
     # Participant deletion
     resp_del = client.delete("/api/participant/P_TEST_APP?confirm=true")
     assert resp_del.status_code == 200
+
+    app.state.stop_worker()

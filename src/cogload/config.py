@@ -61,6 +61,17 @@ class ArtifactConfig:
 
 
 @dataclass
+class InterventionConfig:
+    enabled: bool = True
+    high_load_streak_sec: float = 45.0
+    low_blink_streak_sec: float = 25.0
+    low_blink_bpm_thresh: float = 8.0
+    forward_pitch_thresh_deg: float = -12.0
+    posture_streak_sec: float = 30.0
+    cooldown_sec: float = 60.0
+
+
+@dataclass
 class ServerConfig:
     host: str = "127.0.0.1"
     port: int = 5000
@@ -75,6 +86,7 @@ class AppConfig:
     calibration: CalibrationConfig = field(default_factory=CalibrationConfig)
     model: ModelConfig = field(default_factory=ModelConfig)
     artifacts: ArtifactConfig = field(default_factory=ArtifactConfig)
+    interventions: InterventionConfig = field(default_factory=InterventionConfig)
     server: ServerConfig = field(default_factory=ServerConfig)
     random_seed: int = 42
 
@@ -99,6 +111,7 @@ def load_config(path: Optional[str | Path] = None) -> AppConfig:
         calibration=CalibrationConfig(**raw.get("calibration", {})),
         model=ModelConfig(**raw.get("model", {})),
         artifacts=ArtifactConfig(**raw.get("artifacts", {})),
+        interventions=InterventionConfig(**raw.get("interventions", {})),
         server=ServerConfig(**raw.get("server", {})),
         random_seed=raw.get("random_seed", 42),
     )

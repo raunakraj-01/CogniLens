@@ -55,6 +55,11 @@ def register_routes(app: Flask) -> None:
                             "z": {"blink_rate": 0.0, "gaze_dispersion": 0.0, "head_motion": 0.0},
                         },
                         "warnings": ["no_face"] if not getattr(state, "latest_frame", None) is not None else [],
+                        "attributions": {
+                            "modalities": {"facial_tension": 25.0, "gaze_dynamics": 25.0, "blink_fatigue": 25.0, "head_pose": 25.0},
+                            "top_drivers": [],
+                        },
+                        "interventions": [],
                     }
                 yield f"data: {json.dumps(data)}\n\n"
                 time.sleep(1.0)

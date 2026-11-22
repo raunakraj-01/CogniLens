@@ -38,6 +38,9 @@
       </div>
     </div>
 
+    <!-- Closed-Loop Ergonomic & Adaptive Pacing Intervention Dock -->
+    <div id="intervention-dock" class="intervention-dock"></div>
+
     <!-- Primary 3D Dashboard Grid -->
     <div class="dashboard-grid">
       <!-- Left Chassis: Cognitive Workload Analyzer -->
@@ -191,6 +194,70 @@
         </div>
         <div class="tile-value"><span id="ind-tension">--</span></div>
         <div class="tile-delta" id="delta-tension">Δ baseline: --</div>
+      </div>
+    </div>
+
+    <!-- Explainable AI (XAI) Attribution Console -->
+    <div class="card xai-card" id="card-xai">
+      <div class="card-header">
+        <div class="card-title">Explainable AI (XAI) Telemetry & Feature Attribution</div>
+        <span class="chip chip-info" style="font-size: 0.68rem;">Real-Time Feature Weighting</span>
+      </div>
+
+      <div class="attribution-grid">
+        <!-- Modality 1: Facial Tension -->
+        <div class="modality-item">
+          <div class="modality-top">
+            <span>⚡ Facial Muscle Tension</span>
+            <span class="modality-pct" id="mod-tension-pct">--%</span>
+          </div>
+          <div class="modality-track">
+            <div class="modality-fill fill-tension" id="mod-tension-fill" style="width: 25%;"></div>
+          </div>
+        </div>
+
+        <!-- Modality 2: Ocular Gaze Dynamics -->
+        <div class="modality-item">
+          <div class="modality-top">
+            <span>🎯 Ocular Gaze & Saccades</span>
+            <span class="modality-pct" id="mod-gaze-pct">--%</span>
+          </div>
+          <div class="modality-track">
+            <div class="modality-fill fill-gaze" id="mod-gaze-fill" style="width: 25%;"></div>
+          </div>
+        </div>
+
+        <!-- Modality 3: Blink & Eye Fatigue -->
+        <div class="modality-item">
+          <div class="modality-top">
+            <span>👁️ Blink Dynamics & Fatigue</span>
+            <span class="modality-pct" id="mod-blink-pct">--%</span>
+          </div>
+          <div class="modality-track">
+            <div class="modality-fill fill-blink" id="mod-blink-fill" style="width: 25%;"></div>
+          </div>
+        </div>
+
+        <!-- Modality 4: Head Pose Dynamics -->
+        <div class="modality-item">
+          <div class="modality-top">
+            <span>🧭 Head Pose & Velocity</span>
+            <span class="modality-pct" id="mod-head-pct">--%</span>
+          </div>
+          <div class="modality-track">
+            <div class="modality-fill fill-head" id="mod-head-fill" style="width: 25%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Primary Drivers -->
+      <div class="drivers-container">
+        <span class="drivers-label">Primary Signal Drivers:</span>
+        <div id="drivers-list" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <span class="driver-pill"><span id="driver-1-name">Corrugator Brow</span> <span class="z-badge" id="driver-1-z">+0.0σ</span></span>
+          <span class="driver-pill"><span id="driver-2-name">Blink Suppression</span> <span class="z-badge" id="driver-2-z">+0.0σ</span></span>
+          <span class="driver-pill"><span id="driver-3-name">Saccadic Velocity</span> <span class="z-badge" id="driver-3-z">+0.0σ</span></span>
+        </div>
       </div>
     </div>
 
